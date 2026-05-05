@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 const steps = [
   {
@@ -50,7 +49,7 @@ const steps = [
 
 export default function ProcessPage() {
   return (
-    <main className="bg-black text-white overflow-hidden">
+    <main className="bg-black text-white">
 
       {/* HERO */}
       <section className="h-screen flex items-center justify-center text-center px-6">
@@ -64,94 +63,59 @@ export default function ProcessPage() {
         </div>
       </section>
 
-      {/* STEPS */}
-      <section className="relative">
+      {/* STEPS (STATIC, NO SWIPE) */}
+      {steps.map((step, i) => (
+        <section
+          key={i}
+          className="min-h-screen flex items-center px-6 border-t border-white/5"
+        >
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
 
-        {/* background glow */}
-        <div className="fixed inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.08),transparent_60%)]" />
+            {/* IMAGE */}
+            <div className="relative h-[400px] md:h-[500px] w-full rounded-2xl overflow-hidden">
+              <Image
+                src={step.image}
+                alt={step.title}
+                fill
+                className="object-cover"
+              />
+            </div>
 
-        {steps.map((step, i) => (
-          <section
-            key={i}
-            className="h-screen flex items-center justify-center px-6"
-          >
-            <FloatingPanel step={step} index={i} />
-          </section>
-        ))}
+            {/* TEXT */}
+            <div>
+              <p className="text-xs tracking-[0.3em] text-gray-500 mb-4">
+                0{i + 1}
+              </p>
 
+              <h2 className="text-4xl md:text-6xl font-semibold">
+                {step.title}
+              </h2>
+
+              <p className="text-gray-300 mt-2 text-lg">
+                {step.subtitle}
+              </p>
+
+              <p className="text-gray-500 mt-6 leading-relaxed">
+                {step.text}
+              </p>
+            </div>
+
+          </div>
+        </section>
+      ))}
+
+      {/* FINAL SECTION */}
+      <section className="h-screen flex items-center justify-center text-center px-6">
+        <div className="max-w-2xl">
+          <h2 className="text-5xl md:text-6xl font-semibold">
+            Built with precision.
+          </h2>
+          <p className="text-gray-500 mt-6 text-lg">
+            Every step is controlled, measured, and executed with architectural clarity.
+          </p>
+        </div>
       </section>
+
     </main>
-  );
-}
-
-/* =========================
-   FLOATING CARD
-========================= */
-
-function FloatingPanel({
-  step,
-  index,
-}: {
-  step: {
-    title: string;
-    subtitle: string;
-    text: string;
-    image: string;
-  };
-  index: number;
-}) {
-  return (
-    <motion.div
-      drag
-      dragElastic={0.2}
-      whileDrag={{ scale: 1.05 }}
-      className="
-        w-[92%]
-        md:w-[900px]
-
-        rounded-3xl
-        overflow-hidden
-
-        bg-white/5
-        backdrop-blur-2xl
-        border border-white/10
-        shadow-2xl
-
-        cursor-grab active:cursor-grabbing
-      "
-    >
-
-      {/* IMAGE */}
-      <div className="relative h-[320px] md:h-[420px] w-full">
-        <Image
-          src={step.image}
-          alt={step.title}
-          fill
-          className="object-cover"
-        />
-        <div className="absolute inset-0 bg-black/20" />
-      </div>
-
-      {/* CONTENT */}
-      <div className="p-10 md:p-14">
-
-        <p className="text-xs tracking-[0.3em] text-gray-400 mb-4">
-          0{index + 1}
-        </p>
-
-        <h2 className="text-4xl md:text-5xl font-semibold">
-          {step.title}
-        </h2>
-
-        <p className="text-gray-300 mt-2 text-lg">
-          {step.subtitle}
-        </p>
-
-        <p className="text-gray-500 mt-6 leading-relaxed">
-          {step.text}
-        </p>
-
-      </div>
-    </motion.div>
   );
 }
